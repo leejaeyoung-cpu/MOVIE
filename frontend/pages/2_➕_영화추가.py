@@ -23,14 +23,74 @@ with st.form("add_movie_form"):
     
     with col2:
         genre = st.text_input("🎭 장르 *", placeholder="예: SF, 스릴러")
-        poster_url = st.text_input("🖼️ 포스터 URL", placeholder="https://...")
         
-        # 포스터 미리보기
+        # 포스터 입력 섹션
+        st.markdown("#### 🖼️ 포스터 이미지")
+        st.caption("URL을 입력하거나 이미지를 업로드하세요.")
+        
+        # 1. URL 입력 및 검색 기능
+        col_url, col_btn = st.columns([3, 1])
+        with col_url:
+            poster_url_input = st.text_input(
+                "포스터 URL",
+                placeholder="https://example.com/poster.jpg",
+                label_visibility="collapsed"
+            )
+        
+        with col_btn:
+            # 영화 제목이 있으면 검색 링크 생성
+            if title:
+                import urllib.parse
+                query = urllib.parse.quote(f"{title} 영화 포스터")
+                search_url = f"https://www.google.com/search?tbm=isch&q={query}"
+                st.link_button("🔍 검색", search_url, help="구글 이미지 검색 열기", use_container_width=True)
+            else:
+                st.button("🔍 검색", disabled=True, use_container_width=True)
+
+        # 2. 파일 업로드 (드래그 앤 드롭)
+        uploaded_file = st.file_uploader(
+            "또는 이미지 파일 업로드 (Drag & Drop)",
+            type=["jpg", "jpeg", "png", "webp"],
+            label_visibility="collapsed"
+        )
+        
+        poster_url = poster_url_input
+        
+        # 파일이 업로드되면 URL보다 우선순위 적용 및 Base64 변환
+        if uploaded_file is not None:
+            try:
+                import base64
+                from io import BytesIO
+                from PIL import Image
+                
+                image = Image.open(uploaded_file)
+                
+                # 리사이즈 (용량 최적화, 최대 너비 400px)
+                max_width = 400
+                if image.width > max_width:
+                    ratio = max_width / image.width
+                    new_size = (max_width, int(image.height * ratio))
+                    image = image.resize(new_size, Image.Resampling.LANCZOS)
+                
+                buffered = BytesIO()
+                # 포맷 결정
+                fmt = uploaded_file.type.split('/')[-1].upper()
+                if fmt == 'JPG': fmt = 'JPEG'
+                if fmt not in ['JPEG', 'PNG', 'WEBP']: fmt = 'JPEG'
+                
+                image.save(buffered, format=fmt)
+                img_str = base64.b64encode(buffered.getvalue()).decode()
+                poster_url = f"data:image/{fmt.lower()};base64,{img_str}"
+                
+            except Exception as e:
+                st.error(f"이미지 처리 중 오류가 발생했습니다: {e}")
+
+        # 3. 미리보기
         if poster_url:
             try:
                 st.image(poster_url, width=200, caption="포스터 미리보기")
             except:
-                st.warning("포스터를 불러올 수 없습니다.")
+                st.warning("이미지를 불러올 수 없습니다. URL을 확인해주세요.")
     
     description = st.text_area(
         "📝 영화 설명",
