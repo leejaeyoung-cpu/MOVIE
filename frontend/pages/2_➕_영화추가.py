@@ -1,0 +1,183 @@
+"""
+영화 추가 페이지
+"""
+
+import streamlit as st
+from datetime import date
+from utils.api_client import api
+
+st.set_page_config(page_title="영화 추가", page_icon="➕", layout="wide")
+
+st.title("➕ 영화 추가")
+
+st.markdown("새로운 영화를 데이터베이스에 등록합니다.")
+
+# 입력 폼
+with st.form("add_movie_form"):
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        title = st.text_input("🎬 영화 제목 *", placeholder="예: 인셉션")
+        director = st.text_input("🎥 감독 *", placeholder="예: 크리스토퍼 놀란")
+        release_date = st.date_input("📅 개봉일 *", value=date.today())
+    
+    with col2:
+        genre = st.text_input("🎭 장르 *", placeholder="예: SF, 스릴러")
+        poster_url = st.text_input("🖼️ 포스터 URL", placeholder="https://...")
+        
+        # 포스터 미리보기
+        if poster_url:
+            try:
+                st.image(poster_url, width=200, caption="포스터 미리보기")
+            except:
+                st.warning("포스터를 불러올 수 없습니다.")
+    
+    description = st.text_area(
+        "📝 영화 설명",
+        placeholder="영화에 대한 간단한 설명을 입력하세요...",
+        height=150
+    )
+    
+    st.markdown("---")
+    
+    col1, col2, col3 = st.columns([1, 1, 2])
+    
+    with col1:
+        submit_button = st.form_submit_button("✅ 영화 등록", use_container_width=True, type="primary")
+    
+    with col2:
+        clear_button = st.form_submit_button("🔄 초기화", use_container_width=True)
+
+# 제출 처리
+if submit_button:
+    # 필수 필드 검증
+    if not all([title, director, genre]):
+        st.error("⚠️ 필수 항목을 모두 입력해주세요! (제목, 감독, 장르)")
+    else:
+        # 영화 데이터 생성
+        movie_data = {
+            "title": title,
+            "release_date": str(release_date),
+            "director": director,
+            "genre": genre,
+            "poster_url": poster_url or "",
+            "description": description or ""
+        }
+        
+        # API 호출
+        with st.spinner("영화를 등록하는 중..."):
+            result = api.create_movie(movie_data)
+        
+        if result:
+            st.success(f"🎉 영화 '{title}'이(가) 성공적으로 등록되었습니다!")
+            
+            # 등록된 영화 정보 표시
+            with st.expander("📄 등록된 영화 정보", expanded=True):
+                col1, col2 = st.columns([1, 2])
+                
+                with col1:
+                    if poster_url:
+                        try:
+                            st.image(poster_url, use_column_width=True)
+                        except:
+                            pass
+                
+                with col2:
+                    st.markdown(f"**제목**: {result.get('title')}")
+                    st.markdown(f"**감독**: {result.get('director')}")
+                    st.markdown(f"**장르**: {result.get('genre')}")
+                    st.markdown(f"**개봉일**: {result.get('release_date')}")
+                    st.markdown(f"**ID**: {result.get('id')}")
+            
+            # 다음 액션 버튼
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                if st.button("📝 이 영화에 리뷰 작성하기", use_container_width=True):
+                    st.session_state.selected_movie_id = result.get('id')
+                    st.switch_page("pages/3_✍️_리뷰작성.py")
+            
+            with col2:
+                if st.button("🎬 영화 목록 보기", use_container_width=True):
+                    st.switch_page("pages/1_🎬_영화목록.py")
+        else:
+            st.error("❌ 영화 등록에 실패했습니다. 백엔드 연결을 확인하세요.")
+
+# 샘플 영화 데이터
+st.markdown("---")
+st.subheader("💡 샘플 영화 빠른 등록")
+
+st.markdown("테스트용으로 유명한 영화를 빠르게 등록할 수 있습니다.")
+
+sample_movies = [
+    {
+        "title": "인셉션",
+        "director": "크리스토퍼 놀란",
+        "release_date": "2010-07-21",
+        "genre": "SF, 스릴러",
+        "poster_url": "https://upload.wikimedia.org/wikipedia/ko/6/67/%EC%9D%B8%EC%85%89%EC%85%98_%ED%8F%AC%EC%8A%A4%ED%84%B0.jpg",
+        "description": "꿈 속의 꿈으로 들어가 생각을 훔치고 심는 특수 요원의 이야기"
+    },
+    {
+        "title": "기생충",
+        "director": "봉준호",
+        "release_date": "2019-05-30",
+        "genre": "드라마, 스릴러",
+        "poster_url": "https://upload.wikimedia.org/wikipedia/ko/5/53/%EA%B8%B0%EC%83%9D%EC%B6%A9_%ED%8F%AC%EC%8A%A4%ED%84%B0.jpg",
+        "description": "전원 백수인 기택 가족과 IT 기업 CEO 박 사장 가족의 만남"
+    },
+    {
+        "title": "인터스텔라",
+        "director": "크리스토퍼 놀란",
+        "release_date": "2014-11-06",
+        "genre": "SF, 드라마",
+        "poster_url": "https://upload.wikimedia.org/wikipedia/ko/4/4a/%EC%9D%B8%ED%84%B0%EC%8A%A4%ED%85%94%EB%9D%BC.jpg",
+        "description": "황폐해진 지구를 떠나 새로운 행성을 찾아 떠나는 우주 탐험"
+    }
+]
+
+cols = st.columns(3)
+
+for i, sample in enumerate(sample_movies):
+    with cols[i]:
+        with st.container():
+            if sample.get("poster_url"):
+                try:
+                    st.image(sample["poster_url"], use_column_width=True)
+                except:
+                    pass
+            
+            st.markdown(f"**{sample['title']}**")
+            st.caption(f"{sample['director']} | {sample['genre']}")
+            
+            if st.button(f"등록하기", key=f"sample_{i}", use_container_width=True):
+                result = api.create_movie(sample)
+                if result:
+                    st.success(f"✅ {sample['title']} 등록 완료!")
+                    st.rerun()
+                else:
+                    st.error("등록 실패 (이미 존재하는 영화일 수 있습니다)")
+
+# 사이드바 - 가이드
+with st.sidebar:
+    st.subheader("📖 사용 가이드")
+    
+    st.markdown("""
+    ### 필수 입력 항목
+    - 🎬 영화 제목
+    - 🎥 감독
+    - 🎭 장르
+    
+    ### 선택 항목
+    - 🖼️ 포스터 URL
+    - 📝 영화 설명
+    
+    ### 팁
+    - 포스터 URL은 나무위키, Wikipedia 등에서 복사하세요
+    - 장르는 쉼표로 구분 (예: SF, 스릴러)
+    - 샘플 영화로 빠르게 테스트 가능!
+    """)
+    
+    st.markdown("---")
+    
+    st.info("💡 영화 등록 후 바로 리뷰를 작성할 수 있습니다!")

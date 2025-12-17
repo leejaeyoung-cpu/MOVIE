@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# 환경 변수
+.env
+*.env
+!.env.example
+
+# 데이터베이스
+*.db
+*.sqlite
+*.sqlite3
+
+# ML 모델 (대용량)
+*.pt
+*.pth
+*.onnx
+*.pkl
+models/*.pt
+models/*.pth
+models/*.onnx
+!models/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-*
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# 임시 파일
+tmp/
+temp/
+*.tmp
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# 테스트
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Redis dump
+dump.rdb
+
+# MLflow
+mlruns/
+mlartifacts/
