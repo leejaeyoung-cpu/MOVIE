@@ -43,9 +43,9 @@ with st.form("add_movie_form"):
                 import urllib.parse
                 query = urllib.parse.quote(f"{title} 영화 포스터")
                 search_url = f"https://www.google.com/search?tbm=isch&q={query}"
-                st.link_button("🔍 검색", search_url, help="구글 이미지 검색 열기", use_container_width=True)
+                st.link_button("🔍 검색", search_url, help="구글 이미지 검색 열기", use_column_width=True)
             else:
-                st.button("🔍 검색", disabled=True, use_container_width=True)
+                st.button("🔍 검색", disabled=True, use_column_width=True)
 
         # 2. 파일 업로드 (드래그 앤 드롭)
         uploaded_file = st.file_uploader(

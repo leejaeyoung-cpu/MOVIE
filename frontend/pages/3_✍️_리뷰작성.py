@@ -56,7 +56,7 @@ col1, col2 = st.columns([1, 3])
 with col1:
     if selected_movie.get("poster_url"):
         try:
-            st.image(selected_movie["poster_url"], use_container_width=True)
+            st.image(selected_movie["poster_url"], use_column_width=True)
         except:
             pass
 
