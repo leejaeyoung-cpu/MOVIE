@@ -78,7 +78,7 @@ if submit_button:
                 with col1:
                     if poster_url:
                         try:
-                            st.image(poster_url, use_column_width=True)
+                            st.image(poster_url, use_container_width=True)
                         except:
                             pass
                 
@@ -143,7 +143,7 @@ for i, sample in enumerate(sample_movies):
         with st.container():
             if sample.get("poster_url"):
                 try:
-                    st.image(sample["poster_url"], use_column_width=True)
+                    st.image(sample["poster_url"], use_container_width=True)
                 except:
                     pass
             

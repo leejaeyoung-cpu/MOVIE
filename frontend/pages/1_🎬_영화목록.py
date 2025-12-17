@@ -63,11 +63,11 @@ try:
                             # 포스터 (또는 플레이스홀더)
                             if movie.get("poster_url"):
                                 try:
-                                    st.image(movie["poster_url"], use_column_width=True)
+                                    st.image(movie["poster_url"], use_container_width=True)
                                 except:
-                                    st.image("https://via.placeholder.com/300x450?text=No+Poster", use_column_width=True)
+                                    st.image("https://via.placeholder.com/300x450?text=No+Poster", use_container_width=True)
                             else:
-                                st.image("https://via.placeholder.com/300x450?text=No+Poster", use_column_width=True)
+                                st.image("https://via.placeholder.com/300x450?text=No+Poster", use_container_width=True)
                             
                             # 제목
                             st.subheader(movie.get("title", "Unknown"))
