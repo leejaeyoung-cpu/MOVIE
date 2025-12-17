@@ -281,8 +281,8 @@ MIT License - 자세한 내용은 [LICENSE](LICENSE) 참조
 ## 👥 개발자
 
 **Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your.email@example.com
+- GitHub: [(https://github.com/leejaeyoung-cpu)]
+- Email: brookin@hanmail.net
 
 ## 🙏 감사의 말
 
