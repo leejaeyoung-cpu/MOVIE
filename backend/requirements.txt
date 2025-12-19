@@ -42,7 +42,6 @@ lime==0.2.0.1
 shap==0.43.0
 
 # NLP - 한국어
-Konn.py
 konlpy==0.6.0
 soynlp==0.0.493
 
@@ -63,13 +62,11 @@ prometheus-fastapi-instrumentator==6.1.0
 python-dotenv==1.0.0
 httpx==0.25.2
 aiofiles==23.2.1
-pydantic-settings==2.1.0
 
 # 테스트
 pytest==7.4.3
 pytest-asyncio==0.21.1
 pytest-cov==4.1.0
-httpx==0.25.2
 
 # 개발 도구
 black==23.11.0

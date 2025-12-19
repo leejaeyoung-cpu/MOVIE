@@ -35,6 +35,13 @@ class Settings(BaseSettings):
     # ===== CORS =====
     CORS_ORIGINS: list = ["http://localhost:8501", "http://localhost:3000"]
     
+    # ===== OMDb API (Open Movie Database) =====
+    OMDB_API_KEY: str | None = None  # OMDb API 키 (환경 변수에서 설정)
+    OMDB_BASE_URL: str = "http://www.omdbapi.com"
+    ENABLE_OMDB: bool = True  # OMDb API 사용 여부
+
+
+    
     # ==========================================
     # AI/ML 기능 토글 (핵심!)
     # ==========================================
@@ -193,27 +200,31 @@ class Settings(BaseSettings):
 # 싱글톤 인스턴스
 settings = Settings()
 
-
-def get_device():
-    """
-    사용할 디바이스 반환 (GPU/CPU)
-    """
-    if settings.ENABLE_GPU:
-        import torch
-        if torch.cuda.is_available():
-            return f"cuda:{settings.GPU_DEVICE}"
-        else:
-            print("⚠️  GPU가 활성화되어 있지만 CUDA를 사용할 수 없습니다. CPU를 사용합니다.")
-            return "cpu"
-    return "cpu"
+# Device selection moved to sentiment_analyzer.py
+# def get_device():
+#     """
+#     사용할 디바이스 반환 (GPU/CPU)
+#     """
+#     if settings.ENABLE_GPU:
+#         import torch
+#         if torch.cuda.is_available():
+#             return f"cuda:{settings.GPU_DEVICE}"
+#         else:
+#             print("⚠️  GPU가 활성화되어 있지만 CUDA를 사용할 수 없습니다. CPU를 사용합니다.")
+#             return "cpu"
+#     return "cpu"
 
 
 def get_model_config():
     """
     현재 활성화된 모델 설정 요약
     """
+    device = "cpu"  # Default device
+    if settings.ENABLE_GPU:
+        device = f"cuda:{settings.GPU_DEVICE}"
+    
     config = {
-        "device": get_device(),
+        "device": device,
         "quantization": settings.ENABLE_QUANTIZATION,
         "sentiment_model": settings.SENTIMENT_MODEL,
         "recommendation_model": settings.RECOMMENDATION_MODEL,

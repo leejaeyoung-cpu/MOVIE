@@ -15,6 +15,8 @@ from .database import init_db
 
 # 라우터 import
 from .routers import movies, reviews, recommendations
+from .routers import settings as settings_router
+
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -109,6 +111,9 @@ async def get_config():
 app.include_router(movies.router, prefix="/api/movies", tags=["Movies"])
 app.include_router(reviews.router, prefix="/api/reviews", tags=["Reviews"])
 app.include_router(recommendations.router, prefix="/api/recommendations", tags=["Recommendations"])
+app.include_router(settings_router.router, prefix="/api/settings", tags=["Settings"])
+
+
 
 
 if __name__ == "__main__":

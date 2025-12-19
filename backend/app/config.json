@@ -1,0 +1,8 @@
+{
+  "enable_llm": true,
+  "enable_gpu": true,
+  "enable_quantization": false,
+  "enable_absa": true,
+  "enable_emotion_classification": true,
+  "enable_gnn": true
+}

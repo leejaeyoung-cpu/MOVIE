@@ -12,7 +12,13 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from typing import List, Dict, Tuple, Optional
-from ..config import settings, get_device
+from ..config import settings
+
+def get_device():
+    """Get device (CPU/GPU)"""
+    if settings.ENABLE_GPU and torch.cuda.is_available():
+        return f"cuda:{settings.GPU_DEVICE}"
+    return "cpu"
 
 
 class NCFModel(nn.Module):

@@ -15,6 +15,8 @@ build/
 .env
 *.env
 !.env.example
+.env.local
+*.env.local
 
 # 데이터베이스
 *.db
@@ -70,3 +72,19 @@ dump.rdb
 # MLflow
 mlruns/
 mlartifacts/
+
+# 배포 관련
+.vercel
+.railway
+.render
+
+# 테스트 및 디버그 파일
+debug_*.py
+test_*.py
+quick_*.py
+performance_*.txt
+*_report.txt
+check_db.py
+
+# Streamlit cache
+.streamlit/cache/

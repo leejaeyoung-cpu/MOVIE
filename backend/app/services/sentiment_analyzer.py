@@ -9,12 +9,32 @@
 - 양자화 지원
 """
 
-import torch
-import torch.nn as nn
-from transformers import AutoModel, AutoTokenizer, AutoModelForSequenceClassification
+# Optional imports for heavy ML dependencies
+try:
+    import torch
+    import torch.nn as nn
+    from transformers import AutoModel, AutoTokenizer, AutoModelForSequenceClassification
+    TORCH_AVAILABLE = True
+except ImportError:
+    TORCH_AVAILABLE = False
+    print("⚠️ PyTorch not available. Using lightweight mode.")
+
 from typing import Dict, List, Optional, Tuple
 import numpy as np
-from ..config import settings, get_device
+from ..config import settings
+
+def get_device():
+    """Get device (CPU/GPU)"""
+    if not TORCH_AVAILABLE:
+        return "cpu"
+    if settings.ENABLE_GPU:
+        import torch
+        if torch.cuda.is_available():
+            return f"cuda:{settings.GPU_DEVICE}"
+        else:
+            print("⚠️ GPU enabled but CUDA not available. Using CPU.")
+            return "cpu"
+    return "cpu"
 
 class SentimentAnalyzer:
     """
@@ -127,7 +147,7 @@ class SentimentAnalyzer:
             )
         return model
     
-    @torch.no_grad()
+    
     def analyze(self, text: str) -> Dict:
         """
         감성 분석 메인 함수 (키워드 기반 간단 버전)
