@@ -45,22 +45,41 @@ st.markdown("""
 st.markdown('<h1 class="main-header">🎬 Netflix급 영화 리뷰 & AI 추천 시스템</h1>', unsafe_allow_html=True)
 
 # 백엔드 연결 확인
-col1, col2, col3 = st.columns([2, 1, 1])
+backend_available = api.health_check()
 
-with col1:
-    if api.health_check():
+if not backend_available:
+    # 데모 모드 배너
+    st.warning("""
+    ### 🎥 데모 모드로 실행 중입니다
+    
+    현재 백엔드 서버가 연결되지 않았습니다.  
+    **이 버전은 UI/UX 데모용**입니다.
+    
+    완전한 기능을 사용하려면:
+    1. Repository를 클론하세요: https://github.com/leejaeyoung-cpu/MOVIE
+    2. 로컬에서 백엔드와 프론트엔드를 함께 실행하세요
+    
+    ```bash
+    # 백엔드 실행
+    cd backend && uvicorn app.main:app --reload
+    
+    # 프론트엔드 실행 (새 터미널)
+    cd frontend && streamlit run app.py
+    ```
+    """)
+    st.markdown("---")
+else:
+    col1, col2, col3 = st.columns([2, 1, 1])
+    
+    with col1:
         st.success("✅ 백엔드 연결 성공!")
-    else:
-        st.error("❌ 백엔드 연결 실패! 백엔드를 먼저 실행하세요.")
-        st.code("cd backend\nuvicorn app.main:app --reload", language="bash")
-        st.stop()
-
-with col2:
-    # 설정 정보
-    config = api.get_config()
-    if config:
-        with st.expander("⚙️ 시스템 설정"):
-            st.json(config)
+    
+    with col2:
+        # 설정 정보
+        config = api.get_config()
+        if config:
+            with st.expander("⚙️ 시스템 설정"):
+                st.json(config)
 
 # 메인 콘텐츠
 st.markdown("---")
@@ -113,8 +132,13 @@ st.markdown("---")
 st.subheader("📊 시스템 통계")
 
 try:
-    movies = api.get_movies(limit=1000)
-    reviews = api.get_reviews(limit=1000)
+    if backend_available:
+        movies = api.get_movies(limit=1000)
+        reviews = api.get_reviews(limit=1000)
+    else:
+        # 데모 데이터
+        movies = [{"id": i, "title": f"영화 {i}"} for i in range(1, 31)]
+        reviews = [{"id": i, "sentiment_score": 0.5 + (i % 10) * 0.05} for i in range(1, 301)]
     
     col1, col2, col3, col4 = st.columns(4)
     
