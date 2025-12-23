@@ -1,4 +1,4 @@
-# 🎬 Netflix급 영화 리뷰 AI 시스템
+# 🎬 영화 리뷰 AI 시스템
 
 [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)](https://leemove.streamlit.app/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=FastAPI&logoColor=white)](https://fastapi.tiangolo.com/)

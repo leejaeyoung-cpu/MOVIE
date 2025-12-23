@@ -11,7 +11,7 @@ st.set_page_config(page_title="추천 영화", page_icon="🎯", layout="wide")
 st.title("🎯 AI 기반 영화 추천")
 
 st.markdown("""
-**Netflix급 추천 알고리즘**을 사용하여 당신에게 맞는 영화를 찾아드립니다!
+**고급 추천 알고리즘**을 사용하여 당신에게 맞는 영화를 찾아드립니다!
 
 - 🧠 Neural Collaborative Filtering (NCF)
 - 🕸️ Graph Neural Networks (GNN)

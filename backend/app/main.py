@@ -21,7 +21,7 @@ from .routers import settings as settings_router
 app = FastAPI(
     title=settings.APP_NAME,
     version=settings.VERSION,
-    description="Netflix급 영화 리뷰 및 AI 추천 시스템",
+    description="영화 리뷰 및 AI 추천 시스템",
     docs_url="/docs",
     redoc_url="/redoc"
 )

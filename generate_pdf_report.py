@@ -85,7 +85,7 @@ bullet_style = ParagraphStyle(
 # 1. 표지
 # ====================
 story.append(Spacer(1, 2*inch))
-story.append(Paragraph("Netflix급 영화 리뷰 AI 시스템", title_style))
+story.append(Paragraph("영화 리뷰 AI 시스템", title_style))
 story.append(Spacer(1, 0.3*inch))
 story.append(Paragraph("스프린트 미션 18", heading1_style))
 story.append(Spacer(1, 0.5*inch))

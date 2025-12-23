@@ -7,7 +7,7 @@ from utils.api_client import api
 
 # 페이지 설정
 st.set_page_config(
-    page_title="🎬 Netflix급 영화 리뷰 AI",
+    page_title="🎬 영화 리뷰 AI",
     page_icon="🎬",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -42,7 +42,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # 헤더
-st.markdown('<h1 class="main-header">🎬 Netflix급 영화 리뷰 & AI 추천 시스템</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">🎬 영화 리뷰 & AI 추천 시스템</h1>', unsafe_allow_html=True)
 
 # 백엔드 연결 확인
 backend_available = api.health_check()
