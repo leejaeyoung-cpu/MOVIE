@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-12-23 13:20:59",
+  "database": {
+    "movie_count": 30,
+    "review_count": 0,
+    "rating_count": 30,
+    "query_time_ms": 10.48,
+    "join_query_time_ms": 3.13,
+    "db_size_mb": 0.18
+  },
+  "performance": {
+    "db_query_speed": {
+      "grade": "Good",
+      "points": 30,
+      "max_points": 40
+    },
+    "data_volume": {
+      "grade": "Excellent",
+      "points": 30,
+      "max_points": 30
+    },
+    "content": {
+      "grade": "Good",
+      "points": 20,
+      "max_points": 30
+    },
+    "total_score": 80,
+    "max_score": 100,
+    "percentage": 80,
+    "final_grade": "A (Excellent)"
+  },
+  "recommendations": [
+    "Add review data for testing"
+  ]
+}
